@@ -1,0 +1,21 @@
+# Banking System Requirements
+# Python 3.7+ required
+
+# Core Dependencies
+anthropic>=0.75.0  # Claude API SDK
+flask>=2.3.0       # Web interface
+
+# Standard Library (built-in, no install needed):
+# - sqlite3
+# - re  
+# - datetime
+# - typing
+# - dataclasses (Python 3.7+)
+# - json
+
+# Optional for development:
+# pytest>=7.0.0  # For testing
+# black>=22.0.0  # For code formatting
+
+# Installation:
+# pip install -r requirements.txt

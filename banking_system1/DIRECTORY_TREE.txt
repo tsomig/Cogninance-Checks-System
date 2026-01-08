@@ -1,0 +1,54 @@
+banking_system/
+│
+├── 📚 DOCUMENTATION
+│   ├── FILE_SUMMARY.md          ⭐ START HERE - What's new & updated
+│   ├── LAUNCH_GUIDE.md          🚀 Quick launch in 30 seconds
+│   ├── README_WEB.md            📖 Complete web interface guide
+│   ├── README_LIVE.md           📖 Live system documentation
+│   ├── README.md                📖 Original README
+│   ├── PROJECT_DELIVERY.md      📦 Technical overview
+│   ├── QUICKSTART_LIVE.md       ⚡ 2-minute CLI setup
+│   └── QUICKSTART.md            ⚡ Original quickstart
+│
+├── 🎮 RUNNABLE PROGRAMS
+│   ├── web_app.py               ⭐ Flask web server (RUN THIS!)
+│   ├── chat.py                  💻 CLI chat interface
+│   ├── demo.py                  🤖 Automated demo
+│   └── integration_demo.py      🔗 Integration test
+│
+├── ⚙️  CONFIGURATION
+│   ├── config.py                🔑 API key & settings (READY)
+│   └── requirements.txt         📦 Dependencies (Flask + Anthropic)
+│
+├── 🧠 CORE MANAGERS
+│   └── managers/
+│       ├── __init__.py
+│       ├── conversation_agent.py    💬 Claude API integration (UPDATED)
+│       ├── transaction_manager.py   🎯 System orchestrator
+│       ├── intent_parser.py         🧠 NLP hot words engine
+│       └── check_manager.py         💰 Postdated check ops (UPDATED)
+│
+├── 🗄️  DATABASE
+│   └── database/
+│       ├── __init__.py
+│       └── schema.py                📊 DB schema + managers (UPDATED)
+│
+├── 🎨 WEB INTERFACE
+│   ├── templates/
+│   │   └── index.html               🌐 Beautiful chat UI (NEW!)
+│   └── static/
+│       ├── css/                     (empty, ready for custom styles)
+│       └── js/                      (empty, ready for custom scripts)
+│
+├── 📖 DETAILED DOCS
+│   └── docs/
+│       └── INTENT_PARSER_DOCS.md    🔍 NLP engine details
+│
+├── 🏗️  STRUCTURE (empty, ready for extension)
+│   ├── models/
+│   │   └── __init__.py
+│   └── tests/
+│       └── __init__.py
+│
+└── __init__.py                      Python package marker
+
