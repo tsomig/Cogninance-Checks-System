@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Banking Assistant - Voice & Text</title>
+    <title>Voice Banking Assistant</title>
     <style>
         * { margin: 0; padding: 0; box-sizing: border-box; }
         
@@ -21,11 +21,11 @@
         /* Header */
         .header {
             text-align: center;
-            padding: 1.5rem 1rem 0.75rem;
+            padding: 2rem 1rem 1rem;
         }
         
         .header h1 {
-            font-size: 1.5rem;
+            font-size: 1.75rem;
             font-weight: 600;
             background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
             -webkit-background-clip: text;
@@ -35,8 +35,8 @@
         
         .header p {
             color: #9ca3af;
-            font-size: 0.8rem;
-            margin-top: 0.25rem;
+            font-size: 0.9rem;
+            margin-top: 0.5rem;
         }
         
         /* Main Container */
@@ -45,24 +45,24 @@
             flex-direction: column;
             align-items: center;
             width: 100%;
-            max-width: 700px;
-            padding: 0.5rem 1rem 0;
+            max-width: 800px;
+            padding: 1rem;
             flex: 1;
-            overflow: hidden;
         }
         
-        /* Avatar Section - Compact */
+        /* ==================== AVATAR SECTION ==================== */
         .avatar-section {
             position: relative;
-            margin-bottom: 0.75rem;
+            margin-bottom: 1.5rem;
         }
         
         .avatar-container {
             position: relative;
-            width: 120px;
-            height: 120px;
+            width: 180px;
+            height: 180px;
         }
         
+        /* Pulsing rings */
         .avatar-ring {
             position: absolute;
             inset: 0;
@@ -85,53 +85,62 @@
             100% { transform: scale(1.4); opacity: 0; }
         }
         
+        /* Avatar Face */
         .avatar-face {
             position: absolute;
-            inset: 10px;
+            inset: 15px;
             background: linear-gradient(145deg, #667eea 0%, #764ba2 50%, #6B46C1 100%);
             border-radius: 50%;
             display: flex;
             flex-direction: column;
             align-items: center;
             justify-content: center;
-            box-shadow: 0 10px 40px rgba(102, 126, 234, 0.3),
-                inset 0 -5px 20px rgba(0,0,0,0.2);
-            transition: all 0.3s;
+            box-shadow: 
+                0 10px 40px rgba(102, 126, 234, 0.3),
+                inset 0 -5px 20px rgba(0,0,0,0.2),
+                inset 0 5px 20px rgba(255,255,255,0.1);
+            transition: transform 0.3s, box-shadow 0.3s;
         }
         
         .avatar-face.speaking {
-            box-shadow: 0 10px 60px rgba(102, 126, 234, 0.5),
-                inset 0 -5px 20px rgba(0,0,0,0.2);
+            box-shadow: 
+                0 10px 60px rgba(102, 126, 234, 0.5),
+                inset 0 -5px 20px rgba(0,0,0,0.2),
+                inset 0 5px 20px rgba(255,255,255,0.1);
         }
         
         .avatar-face.listening {
-            box-shadow: 0 10px 60px rgba(34, 197, 94, 0.4),
-                inset 0 -5px 20px rgba(0,0,0,0.2);
+            box-shadow: 
+                0 10px 60px rgba(34, 197, 94, 0.4),
+                inset 0 -5px 20px rgba(0,0,0,0.2),
+                inset 0 5px 20px rgba(255,255,255,0.1);
         }
         
+        /* Eyes */
         .avatar-eyes {
             display: flex;
-            gap: 22px;
-            margin-bottom: 12px;
+            gap: 35px;
+            margin-bottom: 20px;
         }
         
         .eye {
-            width: 10px;
-            height: 10px;
+            width: 16px;
+            height: 16px;
             background: white;
             border-radius: 50%;
             position: relative;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.2);
         }
         
         .eye::after {
             content: '';
             position: absolute;
-            width: 5px;
-            height: 5px;
+            width: 8px;
+            height: 8px;
             background: #1a1a2e;
             border-radius: 50%;
-            top: 2.5px;
-            left: 2.5px;
+            top: 4px;
+            left: 4px;
             transition: transform 0.2s;
         }
         
@@ -141,22 +150,29 @@
         
         @keyframes look-around {
             0%, 100% { transform: translate(0, 0); }
-            25% { transform: translate(1.5px, -1px); }
-            75% { transform: translate(-1.5px, -1px); }
+            25% { transform: translate(3px, -1px); }
+            50% { transform: translate(0, 2px); }
+            75% { transform: translate(-3px, -1px); }
         }
         
-        .eye.blink { animation: blink 0.15s ease-in-out; }
+        /* Blink animation */
+        .eye.blink {
+            animation: blink 0.15s ease-in-out;
+        }
         
         @keyframes blink {
+            0%, 100% { transform: scaleY(1); }
             50% { transform: scaleY(0.1); }
         }
         
+        /* Mouth */
         .mouth {
-            width: 22px;
-            height: 6px;
+            width: 35px;
+            height: 10px;
             background: rgba(255,255,255,0.85);
             border-radius: 20px;
             transition: all 0.1s ease;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.2);
         }
         
         .mouth.speaking {
@@ -164,36 +180,54 @@
         }
         
         @keyframes speak {
-            0% { height: 6px; width: 22px; border-radius: 20px; }
-            100% { height: 14px; width: 18px; border-radius: 50%; }
+            0% { 
+                height: 10px; 
+                width: 35px; 
+                border-radius: 20px;
+            }
+            100% { 
+                height: 22px; 
+                width: 28px; 
+                border-radius: 50%;
+            }
         }
         
-        /* Status */
+        .mouth.smile {
+            height: 8px;
+            width: 40px;
+            border-radius: 0 0 20px 20px;
+            background: rgba(255,255,255,0.85);
+        }
+        
+        /* ==================== STATUS SECTION ==================== */
         .status-section {
             text-align: center;
-            margin-bottom: 0.5rem;
-            min-height: 50px;
+            margin-bottom: 1.5rem;
+            min-height: 80px;
         }
         
         .status-text {
-            font-size: 0.9rem;
+            font-size: 1.1rem;
             color: #c4b5fd;
-            margin-bottom: 0.35rem;
+            margin-bottom: 0.75rem;
+            min-height: 28px;
         }
         
+        /* Audio Visualizer */
         .visualizer {
             display: flex;
-            gap: 3px;
+            gap: 4px;
             justify-content: center;
-            height: 30px;
+            height: 50px;
             align-items: center;
         }
         
         .viz-bar {
-            width: 4px;
-            height: 12px;
+            width: 6px;
+            height: 20px;
             background: linear-gradient(180deg, #667eea 0%, #764ba2 100%);
-            border-radius: 2px;
+            border-radius: 3px;
+            transition: height 0.05s ease;
         }
         
         .visualizer.active .viz-bar {
@@ -204,249 +238,233 @@
             background: linear-gradient(180deg, #22c55e 0%, #16a34a 100%);
         }
         
-        .viz-bar:nth-child(1) { animation-delay: 0s; }
+        .viz-bar:nth-child(1) { animation-delay: 0.0s; }
         .viz-bar:nth-child(2) { animation-delay: 0.05s; }
         .viz-bar:nth-child(3) { animation-delay: 0.1s; }
         .viz-bar:nth-child(4) { animation-delay: 0.15s; }
         .viz-bar:nth-child(5) { animation-delay: 0.1s; }
         .viz-bar:nth-child(6) { animation-delay: 0.05s; }
-        .viz-bar:nth-child(7) { animation-delay: 0s; }
+        .viz-bar:nth-child(7) { animation-delay: 0.0s; }
         
         @keyframes visualize {
-            0% { height: 10px; }
-            100% { height: 28px; }
+            0% { height: 15px; }
+            100% { height: 45px; }
         }
         
-        /* Conversation */
+        /* ==================== CONVERSATION SECTION ==================== */
         .conversation-section {
             width: 100%;
-            min-height: 150px;
-            max-height: 220px;
+            max-width: 600px;
+            flex: 1;
+            display: flex;
+            flex-direction: column;
             margin-bottom: 1rem;
-            flex-shrink: 0;
         }
         
         .conversation-box {
             background: rgba(255,255,255,0.05);
             backdrop-filter: blur(10px);
-            border-radius: 12px;
+            border-radius: 16px;
             border: 1px solid rgba(255,255,255,0.1);
-            padding: 0.75rem;
-            height: 100%;
-            max-height: 220px;
+            padding: 1.25rem;
+            flex: 1;
+            max-height: 300px;
             overflow-y: auto;
         }
         
-        .conversation-box::-webkit-scrollbar { width: 5px; }
-        .conversation-box::-webkit-scrollbar-thumb { background: rgba(255,255,255,0.2); border-radius: 3px; }
-        
-        .message {
-            margin-bottom: 0.65rem;
-            animation: fadeIn 0.3s ease;
+        .conversation-box::-webkit-scrollbar {
+            width: 6px;
         }
         
-        @keyframes fadeIn {
-            from { opacity: 0; transform: translateY(8px); }
+        .conversation-box::-webkit-scrollbar-track {
+            background: rgba(255,255,255,0.05);
+            border-radius: 3px;
+        }
+        
+        .conversation-box::-webkit-scrollbar-thumb {
+            background: rgba(255,255,255,0.2);
+            border-radius: 3px;
+        }
+        
+        .message {
+            margin-bottom: 1rem;
+            animation: message-in 0.3s ease;
+        }
+        
+        @keyframes message-in {
+            from { opacity: 0; transform: translateY(10px); }
             to { opacity: 1; transform: translateY(0); }
         }
         
-        .message:last-child { margin-bottom: 0; }
+        .message:last-child {
+            margin-bottom: 0;
+        }
         
         .message-header {
             display: flex;
             align-items: center;
-            gap: 0.4rem;
-            margin-bottom: 0.2rem;
+            gap: 0.5rem;
+            margin-bottom: 0.35rem;
         }
         
-        .message-icon { font-size: 0.85rem; }
+        .message-icon {
+            font-size: 1rem;
+        }
+        
         .message-sender {
-            font-size: 0.65rem;
+            font-size: 0.75rem;
             font-weight: 600;
             text-transform: uppercase;
             letter-spacing: 0.05em;
-        }
-        .message-mode {
-            font-size: 0.6rem;
-            color: #6b7280;
-            margin-left: auto;
         }
         
         .message.user .message-sender { color: #93c5fd; }
         .message.assistant .message-sender { color: #c4b5fd; }
         
         .message-text {
-            font-size: 0.85rem;
-            line-height: 1.5;
+            font-size: 0.95rem;
+            line-height: 1.6;
             color: #e2e8f0;
-            padding-left: 1.25rem;
+            padding-left: 1.5rem;
         }
         
         .empty-state {
             text-align: center;
             color: #6b7280;
             font-style: italic;
-            padding: 1.5rem;
-            font-size: 0.85rem;
+            padding: 2rem;
         }
         
-        /* ==================== INPUT SECTION ==================== */
-        .input-section {
-            width: 100%;
+        /* ==================== CONTROLS SECTION ==================== */
+        .controls-section {
             display: flex;
             flex-direction: column;
-            gap: 0.6rem;
-            flex-shrink: 0;
-            padding-top: 0.5rem;
-            border-top: 1px solid rgba(255,255,255,0.1);
-            background: linear-gradient(to top, rgba(15, 12, 41, 0.95), transparent);
-            padding-bottom: 1rem;
-        }
-        
-        /* Text Input Row */
-        .text-input-row {
-            display: flex;
-            gap: 0.5rem;
             align-items: center;
-        }
-        
-        .text-input {
-            flex: 1;
-            padding: 0.75rem 1rem;
-            background: rgba(255,255,255,0.1);
-            border: 1px solid rgba(255,255,255,0.2);
-            border-radius: 10px;
-            color: white;
-            font-size: 0.9rem;
-            outline: none;
-            transition: all 0.2s;
-        }
-        
-        .text-input::placeholder { color: #9ca3af; }
-        
-        .text-input:focus {
-            border-color: #667eea;
-            background: rgba(255,255,255,0.15);
-            box-shadow: 0 0 0 2px rgba(102, 126, 234, 0.2);
-        }
-        
-        .send-btn {
-            padding: 0.75rem 1.25rem;
-            background: linear-gradient(145deg, #667eea 0%, #764ba2 100%);
-            border: none;
-            border-radius: 10px;
-            color: white;
-            font-size: 0.9rem;
-            font-weight: 600;
-            cursor: pointer;
-            transition: all 0.2s;
-        }
-        
-        .send-btn:hover:not(:disabled) {
-            transform: translateY(-1px);
-            box-shadow: 0 4px 12px rgba(102, 126, 234, 0.4);
-        }
-        
-        .send-btn:disabled {
-            opacity: 0.5;
-            cursor: not-allowed;
-        }
-        
-        /* Voice Row */
-        .voice-row {
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            gap: 0.75rem;
-            padding: 0.25rem 0;
-        }
-        
-        .or-divider {
-            color: #6b7280;
-            font-size: 0.75rem;
+            padding-bottom: 2rem;
         }
         
         .mic-button {
-            width: 50px;
-            height: 50px;
+            width: 80px;
+            height: 80px;
             border-radius: 50%;
             border: none;
             background: linear-gradient(145deg, #ef4444 0%, #dc2626 100%);
             color: white;
-            font-size: 1.25rem;
+            font-size: 2rem;
             cursor: pointer;
-            transition: all 0.3s;
-            box-shadow: 0 4px 15px rgba(239, 68, 68, 0.4);
+            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+            box-shadow: 
+                0 4px 20px rgba(239, 68, 68, 0.4),
+                0 0 0 0 rgba(239, 68, 68, 0.4);
             display: flex;
             align-items: center;
             justify-content: center;
         }
         
-        .mic-button:hover:not(:disabled) { transform: scale(1.05); }
+        .mic-button:hover:not(:disabled) {
+            transform: scale(1.05);
+            box-shadow: 0 6px 30px rgba(239, 68, 68, 0.5);
+        }
+        
+        .mic-button:active:not(:disabled) {
+            transform: scale(0.98);
+        }
         
         .mic-button.listening {
             background: linear-gradient(145deg, #22c55e 0%, #16a34a 100%);
-            box-shadow: 0 4px 15px rgba(34, 197, 94, 0.4);
-            animation: pulse-mic 1.5s ease-in-out infinite;
+            box-shadow: 
+                0 4px 20px rgba(34, 197, 94, 0.4),
+                0 0 0 0 rgba(34, 197, 94, 0.4);
+            animation: pulse-button 1.5s ease-in-out infinite;
         }
         
-        @keyframes pulse-mic {
-            0%, 100% { box-shadow: 0 4px 15px rgba(34, 197, 94, 0.4); }
-            50% { box-shadow: 0 4px 20px rgba(34, 197, 94, 0.6), 0 0 0 8px rgba(34, 197, 94, 0); }
+        @keyframes pulse-button {
+            0%, 100% { 
+                box-shadow: 
+                    0 4px 20px rgba(34, 197, 94, 0.4),
+                    0 0 0 0 rgba(34, 197, 94, 0.4);
+            }
+            50% { 
+                box-shadow: 
+                    0 4px 30px rgba(34, 197, 94, 0.5),
+                    0 0 0 15px rgba(34, 197, 94, 0);
+            }
         }
         
         .mic-button.processing {
             background: linear-gradient(145deg, #f59e0b 0%, #d97706 100%);
+            box-shadow: 0 4px 20px rgba(245, 158, 11, 0.4);
             animation: none;
         }
         
         .mic-button:disabled {
-            background: #4b5563;
-            box-shadow: none;
+            background: linear-gradient(145deg, #6b7280 0%, #4b5563 100%);
+            box-shadow: 0 4px 10px rgba(107, 114, 128, 0.3);
             cursor: not-allowed;
+            transform: none;
         }
         
-        .voice-hint {
-            font-size: 0.7rem;
+        .mic-icon {
+            transition: transform 0.2s;
+        }
+        
+        .mic-button.listening .mic-icon {
+            animation: mic-pulse 0.5s ease-in-out infinite alternate;
+        }
+        
+        @keyframes mic-pulse {
+            from { transform: scale(1); }
+            to { transform: scale(1.1); }
+        }
+        
+        .hint {
+            margin-top: 1rem;
+            font-size: 0.8rem;
             color: #9ca3af;
+            text-align: center;
+        }
+        
+        .hint strong {
+            color: #c4b5fd;
         }
         
         /* Quick Commands */
         .quick-commands {
             display: flex;
             flex-wrap: wrap;
-            gap: 0.35rem;
+            gap: 0.5rem;
             justify-content: center;
-            margin-top: 0.25rem;
+            margin-top: 1rem;
+            max-width: 500px;
         }
         
         .quick-cmd {
-            padding: 0.35rem 0.7rem;
-            background: rgba(255,255,255,0.08);
-            border: 1px solid rgba(255,255,255,0.12);
-            border-radius: 16px;
-            color: #d1d5db;
-            font-size: 0.7rem;
+            padding: 0.5rem 1rem;
+            background: rgba(255,255,255,0.1);
+            border: 1px solid rgba(255,255,255,0.15);
+            border-radius: 20px;
+            color: #e2e8f0;
+            font-size: 0.8rem;
             cursor: pointer;
             transition: all 0.2s;
         }
         
         .quick-cmd:hover {
-            background: rgba(255,255,255,0.15);
-            color: white;
+            background: rgba(255,255,255,0.2);
+            transform: translateY(-1px);
         }
         
         /* Error Toast */
         .error-toast {
             position: fixed;
-            bottom: 1.5rem;
+            bottom: 2rem;
             left: 50%;
             transform: translateX(-50%) translateY(100px);
             background: #ef4444;
             color: white;
-            padding: 0.75rem 1rem;
+            padding: 1rem 1.5rem;
             border-radius: 8px;
-            font-size: 0.85rem;
+            box-shadow: 0 4px 20px rgba(0,0,0,0.3);
             opacity: 0;
             transition: all 0.3s;
             z-index: 1000;
@@ -460,36 +478,54 @@
         /* Navigation */
         .nav-link {
             position: fixed;
-            top: 0.75rem;
-            left: 0.75rem;
+            top: 1rem;
+            left: 1rem;
             color: #9ca3af;
             text-decoration: none;
-            font-size: 0.8rem;
+            font-size: 0.9rem;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
             transition: color 0.2s;
         }
         
-        .nav-link:hover { color: #e2e8f0; }
+        .nav-link:hover {
+            color: #e2e8f0;
+        }
         
-        /* Mobile */
+        /* Mobile Adjustments */
         @media (max-width: 640px) {
-            .avatar-container { width: 100px; height: 100px; }
-            .conversation-section { max-height: 180px; min-height: 120px; }
-            .conversation-box { max-height: 180px; }
-            .text-input { padding: 0.65rem 0.85rem; }
-            .mic-button { width: 44px; height: 44px; font-size: 1.1rem; }
+            .avatar-container {
+                width: 150px;
+                height: 150px;
+            }
+            
+            .avatar-eyes { gap: 28px; }
+            .eye { width: 14px; height: 14px; }
+            .eye::after { width: 7px; height: 7px; top: 3.5px; left: 3.5px; }
+            .mouth { width: 30px; }
+            
+            .conversation-box {
+                max-height: 200px;
+            }
+            
+            .quick-commands {
+                padding: 0 1rem;
+            }
         }
     </style>
 </head>
 <body>
-    <a href="/" class="nav-link">← Back</a>
+    <!-- Navigation back to text chat -->
+    <a href="/" class="nav-link">← Text Chat</a>
     
     <div class="header">
-        <h1>🏦 Banking Assistant</h1>
-        <p>Type or speak to manage your checks</p>
+        <h1>🏦 Voice Banking Assistant</h1>
+        <p>Speak naturally to manage your postdated checks</p>
     </div>
     
     <div class="main-container">
-        <!-- Avatar -->
+        <!-- Avatar Section -->
         <div class="avatar-section">
             <div class="avatar-container">
                 <div class="avatar-ring" id="ring1"></div>
@@ -505,9 +541,9 @@
             </div>
         </div>
         
-        <!-- Status -->
+        <!-- Status Section -->
         <div class="status-section">
-            <div class="status-text" id="statusText">Ready</div>
+            <div class="status-text" id="statusText">Click the microphone to start speaking</div>
             <div class="visualizer" id="visualizer">
                 <div class="viz-bar"></div>
                 <div class="viz-bar"></div>
@@ -519,7 +555,7 @@
             </div>
         </div>
         
-        <!-- Conversation -->
+        <!-- Conversation Section -->
         <div class="conversation-section">
             <div class="conversation-box" id="conversationBox">
                 <div class="empty-state" id="emptyState">
@@ -528,54 +564,48 @@
             </div>
         </div>
         
-        <!-- Input Section -->
-        <div class="input-section">
-            <!-- Text Input -->
-            <div class="text-input-row">
-                <input 
-                    type="text" 
-                    class="text-input" 
-                    id="textInput" 
-                    placeholder="Type your message..."
-                    autocomplete="off"
-                >
-                <button class="send-btn" id="sendBtn" onclick="sendTextMessage()">Send</button>
-            </div>
+        <!-- Controls Section -->
+        <div class="controls-section">
+            <button class="mic-button" id="micButton" onclick="toggleListening()">
+                <span class="mic-icon">🎤</span>
+            </button>
             
-            <!-- Voice Input -->
-            <div class="voice-row">
-                <span class="voice-hint">or press</span>
-                <button class="mic-button" id="micButton" onclick="toggleListening()">🎤</button>
-                <span class="voice-hint">to speak</span>
-            </div>
+            <p class="hint">
+                <strong>Tip:</strong> Speak clearly and wait for the response
+            </p>
             
-            <!-- Quick Commands -->
             <div class="quick-commands">
-                <button class="quick-cmd" onclick="sendQuick('What can you help me with?')">What can you do?</button>
-                <button class="quick-cmd" onclick="sendQuick('Show my checks')">My checks</button>
-                <button class="quick-cmd" onclick="sendQuick('Issue check to Alice for $500')">Issue check</button>
-                <button class="quick-cmd" onclick="sendQuick('Accept all checks')">Accept all</button>
+                <button class="quick-cmd" onclick="sendQuickCommand('What can you help me with?')">
+                    What can you do?
+                </button>
+                <button class="quick-cmd" onclick="sendQuickCommand('Show my checks')">
+                    Show my checks
+                </button>
+                <button class="quick-cmd" onclick="sendQuickCommand('Issue check to Alice for $500')">
+                    Issue a check
+                </button>
             </div>
         </div>
     </div>
     
+    <!-- Error Toast -->
     <div class="error-toast" id="errorToast"></div>
 
     <script>
-        // ==================== SETUP ====================
+        // ==================== INITIALIZATION ====================
         const SpeechRecognition = window.SpeechRecognition || window.webkitSpeechRecognition;
         const synth = window.speechSynthesis;
         
+        // State
         let recognition = null;
         let isListening = false;
         let isProcessing = false;
         let isSpeaking = false;
+        let conversationHistory = [];
         let selectedVoice = null;
         
-        // DOM
+        // DOM Elements
         const micButton = document.getElementById('micButton');
-        const sendBtn = document.getElementById('sendBtn');
-        const textInput = document.getElementById('textInput');
         const statusText = document.getElementById('statusText');
         const visualizer = document.getElementById('visualizer');
         const avatarFace = document.getElementById('avatarFace');
@@ -586,27 +616,31 @@
         const emptyState = document.getElementById('emptyState');
         const rings = document.querySelectorAll('.avatar-ring');
         
-        // Init speech recognition
+        // Check browser support
         if (!SpeechRecognition) {
-            statusText.textContent = '⚠️ Voice not supported in this browser';
+            statusText.textContent = '❌ Speech recognition not supported. Please use Chrome or Edge.';
             micButton.disabled = true;
+            showError('Your browser does not support speech recognition. Please use Chrome or Edge.');
         } else {
-            initSpeechRecognition();
+            initializeSpeechRecognition();
         }
         
         // Load voices
         function loadVoices() {
             const voices = synth.getVoices();
+            // Prefer natural-sounding voices
             selectedVoice = voices.find(v => 
                 v.name.includes('Samantha') ||
                 v.name.includes('Google US English') ||
-                v.name.includes('Microsoft Zira')
+                v.name.includes('Microsoft Zira') ||
+                v.name.includes('English United States')
             ) || voices.find(v => v.lang.startsWith('en')) || voices[0];
         }
+        
         synth.onvoiceschanged = loadVoices;
         loadVoices();
         
-        // Blink animation
+        // Random blink effect
         setInterval(() => {
             if (Math.random() > 0.7) {
                 leftEye.classList.add('blink');
@@ -619,95 +653,103 @@
         }, 3000);
         
         // ==================== SPEECH RECOGNITION ====================
-        function initSpeechRecognition() {
+        function initializeSpeechRecognition() {
             recognition = new SpeechRecognition();
             recognition.continuous = false;
             recognition.interimResults = true;
             recognition.lang = 'en-US';
+            recognition.maxAlternatives = 1;
             
             recognition.onstart = () => {
                 isListening = true;
                 updateUI('listening');
-                statusText.textContent = '🎧 Listening...';
+                statusText.textContent = '🎧 Listening... Speak now';
             };
             
             recognition.onresult = (event) => {
-                const transcript = Array.from(event.results)
-                    .map(r => r[0].transcript)
-                    .join('');
+                const results = event.results;
+                const transcript = results[results.length - 1][0].transcript;
+                const isFinal = results[results.length - 1].isFinal;
                 
-                statusText.textContent = `"${transcript}"`;
-                textInput.value = transcript;
+                statusText.textContent = `📝 "${transcript}"`;
                 
-                if (event.results[0].isFinal) {
+                if (isFinal) {
                     stopListening();
-                    processInput(transcript, 'voice');
+                    processUserInput(transcript);
                 }
             };
             
             recognition.onerror = (event) => {
-                let msg = 'Speech error';
-                if (event.error === 'no-speech') msg = 'No speech detected';
-                else if (event.error === 'not-allowed') msg = 'Mic access denied';
-                showError(msg);
+                console.error('Speech recognition error:', event.error);
+                
+                let errorMessage = 'Speech recognition error';
+                switch (event.error) {
+                    case 'no-speech':
+                        errorMessage = 'No speech detected. Please try again.';
+                        break;
+                    case 'audio-capture':
+                        errorMessage = 'No microphone found. Please check your settings.';
+                        break;
+                    case 'not-allowed':
+                        errorMessage = 'Microphone access denied. Please allow microphone access.';
+                        break;
+                    case 'network':
+                        errorMessage = 'Network error. Please check your connection.';
+                        break;
+                }
+                
+                statusText.textContent = `❌ ${errorMessage}`;
+                showError(errorMessage);
                 stopListening();
             };
             
             recognition.onend = () => {
-                if (isListening && !isProcessing) stopListening();
+                if (isListening && !isProcessing) {
+                    stopListening();
+                }
             };
         }
         
         function toggleListening() {
             if (isProcessing || isSpeaking) {
-                if (isSpeaking) { synth.cancel(); stopSpeaking(); }
+                // Stop current speech if speaking
+                if (isSpeaking) {
+                    synth.cancel();
+                    stopSpeaking();
+                }
                 return;
             }
             
             if (isListening) {
                 recognition.stop();
+                stopListening();
             } else {
-                try { recognition.start(); }
-                catch (e) { showError('Mic error'); }
+                try {
+                    recognition.start();
+                } catch (e) {
+                    console.error('Failed to start recognition:', e);
+                    showError('Failed to start microphone. Please try again.');
+                }
             }
         }
         
         function stopListening() {
             isListening = false;
-            if (!isProcessing && !isSpeaking) updateUI('idle');
-        }
-        
-        // ==================== TEXT INPUT ====================
-        function sendTextMessage() {
-            const text = textInput.value.trim();
-            if (!text || isProcessing || isSpeaking) return;
-            textInput.value = '';
-            processInput(text, 'text');
-        }
-        
-        textInput.addEventListener('keydown', (e) => {
-            if (e.key === 'Enter' && !e.shiftKey) {
-                e.preventDefault();
-                sendTextMessage();
+            if (!isProcessing && !isSpeaking) {
+                updateUI('idle');
             }
-        });
-        
-        function sendQuick(text) {
-            if (isProcessing || isSpeaking) return;
-            textInput.value = '';
-            processInput(text, 'text');
         }
         
-        // ==================== PROCESS ====================
-        async function processInput(text, mode) {
+        // ==================== PROCESS INPUT ====================
+        async function processUserInput(text) {
             if (!text.trim()) return;
             
             isProcessing = true;
             updateUI('processing');
-            statusText.textContent = '🤔 Thinking...';
-            sendBtn.disabled = true;
+            statusText.textContent = '🤔 Processing...';
             
-            addMessage('user', text, mode);
+            // Add user message to conversation
+            addMessage('user', text);
             
             try {
                 const response = await fetch('/api/chat', {
@@ -716,37 +758,53 @@
                     body: JSON.stringify({ message: text })
                 });
                 
-                if (!response.ok) throw new Error(`Error: ${response.status}`);
+                if (!response.ok) {
+                    throw new Error(`Server error: ${response.status}`);
+                }
                 
                 const data = await response.json();
-                if (data.error) throw new Error(data.error);
                 
-                addMessage('assistant', data.response);
-                speak(data.response);
+                if (data.error) {
+                    throw new Error(data.error);
+                }
+                
+                const assistantText = data.response;
+                addMessage('assistant', assistantText);
+                
+                // Speak the response
+                speak(assistantText);
                 
             } catch (error) {
-                statusText.textContent = '❌ Error';
-                showError(error.message);
+                console.error('Error processing input:', error);
+                statusText.textContent = '❌ Error processing request';
+                showError(error.message || 'Failed to process your request');
                 isProcessing = false;
                 updateUI('idle');
-            } finally {
-                sendBtn.disabled = false;
             }
         }
         
-        // ==================== TTS ====================
+        // Quick commands (text-based, no speech input needed)
+        function sendQuickCommand(text) {
+            if (isProcessing || isSpeaking) return;
+            processUserInput(text);
+        }
+        
+        // ==================== TEXT TO SPEECH ====================
         function speak(text) {
+            // Cancel any ongoing speech
             synth.cancel();
             
-            const clean = text
-                .replace(/[✓✗📅📝💰📊🏦🤖💬❌⚠️✨🎉#*_]/g, '')
+            // Clean text for speech (remove markdown, emojis for cleaner speech)
+            const cleanText = text
+                .replace(/[✓✗📅📝💰📊🏦🤖💬❌⚠️✨🎉#*]/g, '')
                 .replace(/\n+/g, '. ')
                 .trim();
             
-            const utterance = new SpeechSynthesisUtterance(clean);
+            const utterance = new SpeechSynthesisUtterance(cleanText);
             utterance.voice = selectedVoice;
             utterance.rate = 1.0;
             utterance.pitch = 1.0;
+            utterance.volume = 1.0;
             
             utterance.onstart = () => {
                 isSpeaking = true;
@@ -755,8 +813,14 @@
                 statusText.textContent = '🗣️ Speaking...';
             };
             
-            utterance.onend = () => stopSpeaking();
-            utterance.onerror = () => stopSpeaking();
+            utterance.onend = () => {
+                stopSpeaking();
+            };
+            
+            utterance.onerror = (event) => {
+                console.error('Speech synthesis error:', event);
+                stopSpeaking();
+            };
             
             synth.speak(utterance);
         }
@@ -764,11 +828,18 @@
         function stopSpeaking() {
             isSpeaking = false;
             updateUI('idle');
-            statusText.textContent = 'Ready';
+            statusText.textContent = 'Click the microphone to continue';
+            
+            // Smile briefly after speaking
+            mouth.classList.add('smile');
+            setTimeout(() => {
+                mouth.classList.remove('smile');
+            }, 1500);
         }
         
-        // ==================== UI ====================
+        // ==================== UI UPDATES ====================
         function updateUI(state) {
+            // Reset all states
             micButton.classList.remove('listening', 'processing');
             visualizer.classList.remove('active', 'listening');
             avatarFace.classList.remove('speaking', 'listening');
@@ -781,38 +852,50 @@
                     visualizer.classList.add('active', 'listening');
                     avatarFace.classList.add('listening');
                     break;
+                    
                 case 'processing':
                     micButton.classList.add('processing');
                     break;
+                    
                 case 'speaking':
                     visualizer.classList.add('active');
                     avatarFace.classList.add('speaking');
                     mouth.classList.add('speaking');
                     rings.forEach(r => r.classList.add('active'));
                     break;
+                    
+                case 'idle':
+                default:
+                    statusText.textContent = 'Click the microphone to start speaking';
+                    break;
             }
         }
         
-        function addMessage(role, text, mode = null) {
-            if (emptyState) emptyState.style.display = 'none';
+        function addMessage(role, text) {
+            // Hide empty state
+            if (emptyState) {
+                emptyState.style.display = 'none';
+            }
             
-            const div = document.createElement('div');
-            div.className = `message ${role}`;
+            // Store in history
+            conversationHistory.push({ role, text });
+            
+            // Create message element
+            const messageDiv = document.createElement('div');
+            messageDiv.className = `message ${role}`;
             
             const icon = role === 'user' ? '👤' : '🤖';
             const sender = role === 'user' ? 'You' : 'Assistant';
-            const modeIcon = mode === 'voice' ? '🎤' : (mode === 'text' ? '⌨️' : '');
             
-            div.innerHTML = `
+            messageDiv.innerHTML = `
                 <div class="message-header">
                     <span class="message-icon">${icon}</span>
                     <span class="message-sender">${sender}</span>
-                    ${mode ? `<span class="message-mode">${modeIcon}</span>` : ''}
                 </div>
                 <div class="message-text">${escapeHtml(text)}</div>
             `;
             
-            conversationBox.appendChild(div);
+            conversationBox.appendChild(messageDiv);
             conversationBox.scrollTop = conversationBox.scrollHeight;
         }
         
@@ -822,35 +905,38 @@
             return div.innerHTML;
         }
         
-        function showError(msg) {
+        function showError(message) {
             const toast = document.getElementById('errorToast');
-            toast.textContent = msg;
+            toast.textContent = message;
             toast.classList.add('show');
-            setTimeout(() => toast.classList.remove('show'), 3500);
+            
+            setTimeout(() => {
+                toast.classList.remove('show');
+            }, 4000);
         }
         
-        // ==================== KEYBOARD ====================
+        // ==================== KEYBOARD SHORTCUTS ====================
         document.addEventListener('keydown', (e) => {
-            // Space for voice (when not typing)
-            if (e.code === 'Space' && document.activeElement !== textInput) {
+            // Spacebar to toggle listening (when not in input field)
+            if (e.code === 'Space' && e.target.tagName !== 'INPUT' && e.target.tagName !== 'TEXTAREA') {
                 e.preventDefault();
                 toggleListening();
             }
+            
             // Escape to stop
             if (e.code === 'Escape') {
-                if (isSpeaking) { synth.cancel(); stopSpeaking(); }
-                if (isListening) { recognition.stop(); stopListening(); }
+                if (isSpeaking) {
+                    synth.cancel();
+                    stopSpeaking();
+                }
+                if (isListening) {
+                    recognition.stop();
+                    stopListening();
+                }
             }
         });
         
-        // Focus text input on letter key
-        document.addEventListener('keypress', (e) => {
-            if (document.activeElement !== textInput && 
-                e.key.length === 1 && !e.ctrlKey && !e.metaKey) {
-                textInput.focus();
-            }
-        });
-        
+        // ==================== INITIALIZE ====================
         updateUI('idle');
     </script>
 </body>
